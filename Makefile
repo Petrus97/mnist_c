@@ -14,6 +14,7 @@ LDFLAGS=
 SRC_DIR=./src
 INC_DIR=./include
 OBJ_DIR=./objs
+IMG_DIR=./images
 
 #
 # Automatic variables for .c and .o files
@@ -45,5 +46,5 @@ prebuild:
 	mkdir -p $(OBJ_DIR)
 
 clean:
-	rm -rf $(BIN) $(OBJ_DIR)/*
+	rm -rf $(BIN) $(OBJ_DIR)/* $(IMG_DIR)/*
 

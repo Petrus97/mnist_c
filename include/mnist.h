@@ -30,8 +30,31 @@ typedef enum
     LABELS
 } data_type_t;
 
+typedef struct image_t
+{
+    uint8_t data[IMAGE_DIM];
+    // TODO add some padding for cache lines
+} image_t;
+
+typedef uint8_t label_t;
+
+typedef struct train_data_t
+{
+    image_t images[DIM_TRAIN_SET];
+    label_t labels[DIM_TRAIN_SET];
+} train_data_t;
+
+typedef struct test_data_t
+{
+    image_t images[DIM_TEST_SET];
+    label_t labels[DIM_TEST_SET];
+} test_data_t;
+
+
 void check_magic_number(const char *path);
 void check_dimensions(const char *path, data_type_t data);
 void display_first_image(const char* path);
+
+void mnist_load_data(train_data_t* train_data, test_data_t* test_data);
 
 #endif

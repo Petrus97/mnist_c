@@ -133,3 +133,37 @@ void display_first_image(const char *path)
     }
     fclose(file);
 }
+
+static void mnist_load_train_images(train_data_t* train_data)
+{
+    FILE* f = NULL;
+    f = fopen(TRAIN_IMAGES_PATH, "rb");
+    if(f == NULL)
+    {
+        return;
+    }
+    fseek(f, IMAGES_OFFSET, SEEK_SET); // skip metadata
+    for (size_t i = 0; i < 50; i++) // FIXME set to DIM_TRAIN_SET
+    {
+        if(fread(&(train_data)->images[i], sizeof(uint8_t), IMAGE_DIM, f))
+        {
+
+        }
+    }
+    
+
+}
+// static void mnist_load_train_labels()
+// {
+// }
+// static void mnist_load_test_images()
+// {
+// }
+// static void mnist_load_test_labels()
+// {
+// }
+
+void mnist_load_data(train_data_t* train_data, test_data_t* test_data)
+{
+    mnist_load_train_images(train_data);
+}
