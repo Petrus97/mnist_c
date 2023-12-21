@@ -134,38 +134,102 @@ void display_first_image(const char *path)
     fclose(file);
 }
 
-static void mnist_load_train_images(train_data_t* train_data)
+static void mnist_load_train_images(train_data_t *train_data)
 {
-    FILE* f = NULL;
+    FILE *f = NULL;
     f = fopen(TRAIN_IMAGES_PATH, "rb");
-    if(f == NULL)
+    if (f == NULL)
     {
         return;
     }
     fseek(f, IMAGES_OFFSET, SEEK_SET); // skip metadata
-    for (size_t i = 0; i < DIM_TRAIN_SET; i++) 
+    for (size_t i = 0; i < DIM_TRAIN_SET; i++)
     {
-        if(fread(&(train_data)->images[i], sizeof(uint8_t), IMAGE_DIM, f) == 784)
+        if (fread(train_data->images[i].data, sizeof(uint8_t), IMAGE_DIM, f) == 784)
         {
         }
         else
         {
-            printf("Error loading iamge #%ld\n", i);
+            printf("Error loading image #%ld\n", i);
         }
     }
     fclose(f);
 }
-// static void mnist_load_train_labels()
-// {
-// }
-// static void mnist_load_test_images()
-// {
-// }
-// static void mnist_load_test_labels()
-// {
-// }
 
-void mnist_load_data(train_data_t* train_data, test_data_t* test_data)
+static void mnist_load_train_labels(train_data_t *train_data)
 {
+    FILE *f = NULL;
+    f = fopen(TRAIN_LABELS_PATH, "rb");
+    if (f == NULL)
+    {
+        return;
+    }
+    fseek(f, LABELS_OFFSET, SEEK_SET); // skip metadata
+    for (size_t i = 0; i < DIM_TRAIN_SET; i++)
+    {
+        if (fread(&(train_data)->labels[i], sizeof(uint8_t), 1, f) == 1)
+        {
+            // printf("%u\n", tmp);
+        }
+        else
+        {
+            printf("Error loading label #%ld\n", i);
+        }
+    }
+    fclose(f);
+}
+
+static void mnist_load_test_images(test_data_t *test_data)
+{
+    FILE *f = NULL;
+    f = fopen(TEST_IMAGES_PATH, "rb");
+    if (f == NULL)
+    {
+        return;
+    }
+    fseek(f, IMAGES_OFFSET, SEEK_SET); // skip metadata
+    for (size_t i = 0; i < DIM_TEST_SET; i++)
+    {
+        if (fread(test_data->images[i].data, sizeof(uint8_t), IMAGE_DIM, f) == 784)
+        {
+        }
+        else
+        {
+            printf("Error loading image #%ld\n", i);
+        }
+    }
+    fclose(f);
+}
+
+static void mnist_load_test_labels(test_data_t *test_data)
+{
+    FILE *f = NULL;
+    f = fopen(TEST_LABELS_PATH, "rb");
+    if (f == NULL)
+    {
+        return;
+    }
+    fseek(f, LABELS_OFFSET, SEEK_SET); // skip metadata
+    for (size_t i = 0; i < DIM_TEST_SET; i++)
+    {
+        if (fread(&(test_data->labels[i]), sizeof(uint8_t), 1, f) == 1)
+        {
+        }
+        else
+        {
+            printf("Error loading label #%ld\n", i);
+        }
+    }
+    fclose(f);
+}
+
+void mnist_load_data(train_data_t *train_data, test_data_t *test_data)
+{
+    // Load training data
     mnist_load_train_images(train_data);
+    mnist_load_train_labels(train_data);
+    // Load test data
+    mnist_load_test_images(test_data);
+    mnist_load_test_labels(test_data);
+
 }
