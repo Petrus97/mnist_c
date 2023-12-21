@@ -143,15 +143,17 @@ static void mnist_load_train_images(train_data_t* train_data)
         return;
     }
     fseek(f, IMAGES_OFFSET, SEEK_SET); // skip metadata
-    for (size_t i = 0; i < 50; i++) // FIXME set to DIM_TRAIN_SET
+    for (size_t i = 0; i < DIM_TRAIN_SET; i++) 
     {
-        if(fread(&(train_data)->images[i], sizeof(uint8_t), IMAGE_DIM, f))
+        if(fread(&(train_data)->images[i], sizeof(uint8_t), IMAGE_DIM, f) == 784)
         {
-
+        }
+        else
+        {
+            printf("Error loading iamge #%ld\n", i);
         }
     }
-    
-
+    fclose(f);
 }
 // static void mnist_load_train_labels()
 // {
