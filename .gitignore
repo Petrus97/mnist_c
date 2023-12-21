@@ -1,0 +1,6 @@
+objs/*
+*.pgm
+*.gz
+.vscode/
+a.out
+mnist_c
