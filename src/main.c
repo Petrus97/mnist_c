@@ -1,6 +1,7 @@
 #include "pgm.h"
 #include "mnist.h"
 #include "normal_distribution.h"
+#include "nn.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -27,10 +28,10 @@ int main()
     //     printf("%ld.pgm: %u\n", i, train_data.labels[i]);
     // }
     seed_random();
-    for (size_t i = 0; i < 15; i++)
-    {
-        printf("%f\n", rand_norm());
-    }
+    uint8_t layers[3] = {3,2,1};
+    network_t* nn = nn_create(layers, 3);
+
+    nn_destroy(nn);
     
     
 
