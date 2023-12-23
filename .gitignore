@@ -4,3 +4,4 @@ objs/*
 .vscode/
 a.out
 mnist_c
+*.py
