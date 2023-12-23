@@ -43,7 +43,10 @@ $(OBJS): $(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 # Add the operations to do before start the compilation
 #
 prebuild:
-	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR) $(IMG_DIR)
+
+valgrind:
+	valgrind --leak-check=full ./$(BIN)
 
 clean:
 	rm -rf $(BIN) $(OBJ_DIR)/* $(IMG_DIR)/*
