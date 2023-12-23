@@ -28,9 +28,14 @@ int main()
     //     printf("%ld.pgm: %u\n", i, train_data.labels[i]);
     // }
     seed_random();
-    uint8_t layers[3] = {3,2,1};
+    uint16_t layers[3] = {784,30,10};
     network_t* nn = nn_create(layers, 3);
-
+    for (size_t i = 0; i < nn->metadata_size; i++)
+    {
+        printf("Biases[%d]: (%d,%d)\n", nn->b_meta[i].index, nn->b_meta[i].n_rows, nn->b_meta[i].n_cols);
+        printf("Weights[%d]: (%d,%d)\n", nn->w_meta[i].index, nn->w_meta[i].n_rows, nn->w_meta[i].n_cols);
+    }
+    
     nn_destroy(nn);
     
     
