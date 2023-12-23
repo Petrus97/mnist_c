@@ -30,14 +30,13 @@ int main()
     seed_random();
     uint16_t layers[3] = {784,30,10};
     network_t* nn = nn_create(layers, 3);
-    for (size_t i = 0; i < nn->metadata_size; i++)
+    for (size_t i = 0; i < nn->num_layers - 1; i++)
     {
-        printf("Biases[%d]: (%d,%d)\n", nn->b_meta[i].index, nn->b_meta[i].n_rows, nn->b_meta[i].n_cols);
-        printf("Weights[%d]: (%d,%d)\n", nn->w_meta[i].index, nn->w_meta[i].n_rows, nn->w_meta[i].n_cols);
+        printf("Biases[%ld]: (%d,%d)\n", i, nn->biases[i]->rows, nn->biases[i]->cols);
+        printf("Weights[%ld]: (%d,%d)\n", i, nn->weights[i]->rows, nn->weights[i]->cols);
     }
     
     nn_destroy(nn);
-    
     
 
     return 0;

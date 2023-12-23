@@ -36,42 +36,36 @@ network_t *nn_create(uint16_t *sizes, uint8_t sizes_len)
         // init sizes array
         nn->sizes = (uint16_t *)calloc(sizes_len, sizeof(uint16_t));
         memcpy(nn->sizes, sizes, 3 * sizeof(uint16_t));
-        // Initialize metadata
-        nn->metadata_size = nn->num_layers - 1;
-        nn->b_meta = (bias_meta_t *)calloc(nn->metadata_size, sizeof(bias_meta_t));
-        nn->w_meta = (weight_meta_t *)calloc(nn->metadata_size, sizeof(weight_meta_t));
-        // Allocate biases
-        nn->biases = (biases_t **)calloc(nn->num_layers - 1, sizeof(biases_t *)); // pointer to biases arrays
+        // Allocate biases matrixes
+        nn->biases = (biases_t **)calloc(nn->num_layers - 1, sizeof(biases_t*)); // pointer to biases arrays
         // Compute/Initialize biases according to normal distribution
         for (size_t i = 1; i < nn->num_layers; i++) // not the input layer
         {
-            // update metadata
-            nn->b_meta[i - 1].index = i - 1;
-            nn->b_meta[i - 1].n_rows = nn->sizes[i];
-            nn->b_meta[i - 1].n_cols = 1;
-            // allocate arrays
-            nn->biases[i - 1] = (biases_t *)calloc(nn->sizes[i], sizeof(biases_t)); //
-            for (size_t j = 0; j < nn->sizes[i]; j++)
+            // Create bias i-1 matrix
+            nn->biases[i - 1] = matrix_create(nn->sizes[i], 1);
+            for (size_t j = 0; j < nn->biases[i-1]->rows; j++)
             {
-                nn->biases[i - 1][j] = rand_norm();
+                for (size_t k = 0; k < nn->biases[i-1]->cols; k++)
+                {
+                    nn->biases[i-1]->data[(j*nn->biases[i-1]->cols) + k] = rand_norm();
+                }
             }
         }
-        // Allocate weights
+        // Allocate weights matrixes
         nn->weights = (weights_t **)calloc(nn->num_layers - 1, sizeof(weights_t *)); // pointer to weights arrays
         // Compute/Initialize weights according to normal distribution
         for (size_t i = 1; i < nn->num_layers; i++) // not the input layer
         {
-            // update metadata
-            nn->w_meta[i - 1].index = i - 1;
-            nn->w_meta[i - 1].n_rows = nn->sizes[i];
-            nn->w_meta[i - 1].n_cols = nn->sizes[i - 1];
+            // Create weight i-1 matrix
             // dimension of the array = layer_size x prev_layer
+            nn->weights[i-1] = matrix_create(nn->sizes[i], nn->sizes[i-1]);
             // i.e. array of 30x784
-            int n_weights = nn->sizes[i] * nn->sizes[i - 1];
-            nn->weights[i - 1] = (weights_t *)calloc(n_weights, sizeof(weights_t));
-            for (size_t j = 0; j < n_weights; j++)
+            for (size_t j = 0; j < nn->weights[i-1]->rows; j++)
             {
-                nn->weights[i - 1][j] = rand_norm();
+                for (size_t k = 0; k < nn->weights[i-1]->cols; k++)
+                {
+                    nn->weights[i-1]->data[(j*nn->weights[i-1]->cols) + k] = rand_norm();
+                }
             }
         }
         return nn;
@@ -84,13 +78,11 @@ void nn_destroy(network_t *nn)
     {
         for (size_t i = 0; i < nn->num_layers - 1; i++)
         {
-            free(nn->biases[i]);
-            free(nn->weights[i]);
+            matrix_destroy(nn->biases[i]);
+            matrix_destroy(nn->weights[i]);
         }
         free(nn->biases);
         free(nn->weights);
-        free(nn->b_meta);
-        free(nn->w_meta);
         free(nn->sizes);
 
         free(nn);
