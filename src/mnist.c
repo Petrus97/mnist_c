@@ -233,3 +233,19 @@ void mnist_load_data(train_data_t *train_data, test_data_t *test_data)
     mnist_load_test_labels(test_data);
 
 }
+
+/**
+ * @brief Return the Input layer as matrix_t
+ * 
+ * @param test_data 
+ * @return matrix_t* 
+ */
+matrix_t* mnist_img2matrix(const uint8_t* image)
+{
+    matrix_t* m = matrix_create(IMAGE_DIM, 1);
+    for (size_t i = 0; i < IMAGE_DIM; i++)
+    {
+        m->data[i] = (float)image[i];
+    }
+    return m;
+}
