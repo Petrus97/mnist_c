@@ -33,42 +33,25 @@ int main()
     //check_magic_number(TRAIN_IMAGES_PATH);
     //check_dimensions(TRAIN_IMAGES_PATH, IMAGES);
     //display_first_image(TRAIN_IMAGES_PATH);
-    // mnist_load_data(&train_data, &test_data);
+    mnist_load_data(&train_data, &test_data);
     // for (size_t i = 0; i < 50; i++)
     // {
     //     pgm_save_image(train_data.images[i].data);
     //     printf("%ld.pgm: %u\n", i, train_data.labels[i]);
     // }
     seed_random();
-    // uint16_t layers[3] = {784,30,10};
-    // network_t* nn = nn_create(layers, 3);
-    // for (size_t i = 0; i < nn->num_layers - 1; i++)
-    // {
-    //     printf("Biases[%ld]: (%d,%d)\n", i, nn->biases[i]->rows, nn->biases[i]->cols);
-    //     printf("Weights[%ld]: (%d,%d)\n", i, nn->weights[i]->rows, nn->weights[i]->cols);
-    // }
+    uint16_t layers[3] = {784,30,10};
+    network_t* nn = nn_create(layers, 3);
+    for (size_t i = 0; i < nn->num_layers - 1; i++)
+    {
+        printf("Biases[%ld]: (%d,%d)\n", i, nn->biases[i]->rows, nn->biases[i]->cols);
+        printf("Weights[%ld]: (%d,%d)\n", i, nn->weights[i]->rows, nn->weights[i]->cols);
+    }
     
-    // nn_destroy(nn);
+    int ret = nn_evaluate(nn, &test_data);
+    printf("Evaluation: %d - %d\n", ret, DIM_TEST_SET);
     
-    matrix_t* A = matrix_create(3, 2);
-    matrix_t* B = matrix_create(2, 4);
-    memcpy(A->data, A_test, A->rows * A->cols * sizeof(float));
-    memcpy(B->data, B_test, B->rows * B->cols * sizeof(float));
+    nn_destroy(nn);
 
-    matrix_t* C = matrix_dot(A, B);
-
-
-    matrix_print(A);
-    matrix_print(B);
-    matrix_print(C);
-
-    matrix_sigmoid(C);
-    matrix_print(C);
-    printf("Argmax: %d\n", matrix_argmax(C));
-
-
-    matrix_destroy(A);
-    matrix_destroy(B);
-    matrix_destroy(C);
     return 0;
 }
