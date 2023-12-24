@@ -77,7 +77,7 @@ matrix_t *nn_feedforward_r(network_t *nn, matrix_t *input, int layer_num)
 {
     if(layer_num == nn->num_layers - 1)
     {
-        return input; // TODO
+        return input;
     }
     else
     {
@@ -100,9 +100,10 @@ int nn_evaluate(network_t *nn, const test_data_t *test_data)
 
     for (size_t i = 0; i < BUFFER_SIZE(test_data->labels); i++)
     {
-        matrix_t *input = matrix_create(IMAGE_DIM, 1); // OBS! Deallocation of this matrix inside the feedforward!
+        // matrix_t *input = matrix_create(IMAGE_DIM, 1); // OBS! Deallocation of this matrix inside the feedforward!
+        matrix_t* input = mnist_img2matrix(test_data->images[i].data);
         matrix_t *result = nn_feedforward(nn, input);
-        // // matrix_print(result);
+        // matrix_print(result);
         int x = matrix_argmax(result);
         // printf("%d - %d\n", x, test_data->labels[i]);
         sum += (x == test_data->labels[i]);

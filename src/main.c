@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "biases.h"
+#include "weights.h"
 
 
 train_data_t train_data = {
@@ -47,10 +49,13 @@ int main()
         printf("Biases[%ld]: (%d,%d)\n", i, nn->biases[i]->rows, nn->biases[i]->cols);
         printf("Weights[%ld]: (%d,%d)\n", i, nn->weights[i]->rows, nn->weights[i]->cols);
     }
+    memcpy(nn->biases[0]->data, b0, nn->biases[0]->rows * nn->biases[0]->cols * sizeof(float));
+    memcpy(nn->biases[1]->data, b1, nn->biases[1]->rows * nn->biases[1]->cols * sizeof(float));
+    memcpy(nn->weights[0]->data, w0, nn->weights[0]->rows * nn->weights[0]->cols * sizeof(float));
+    memcpy(nn->weights[1]->data, w1, nn->weights[1]->rows * nn->weights[1]->cols * sizeof(float));
     
     int ret = nn_evaluate(nn, &test_data);
     printf("Evaluation: %d - %d\n", ret, DIM_TEST_SET);
-    
     nn_destroy(nn);
 
     return 0;
