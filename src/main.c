@@ -19,13 +19,13 @@ test_data_t test_data = {
     .labels = {0}
 };
 
-float A_test[3][2] = {
+double A_test[3][2] = {
     {3, 1},
     {0, 2},
     {1, 0}
 };
 
-float B_test[2][4] = {
+double B_test[2][4] = {
     {2, 4, 1, 0},
     {0, 0, 1, 0}
 };
@@ -49,10 +49,10 @@ int main()
         printf("Biases[%ld]: (%d,%d)\n", i, nn->biases[i]->rows, nn->biases[i]->cols);
         printf("Weights[%ld]: (%d,%d)\n", i, nn->weights[i]->rows, nn->weights[i]->cols);
     }
-    memcpy(nn->biases[0]->data, b0, nn->biases[0]->rows * nn->biases[0]->cols * sizeof(float));
-    memcpy(nn->biases[1]->data, b1, nn->biases[1]->rows * nn->biases[1]->cols * sizeof(float));
-    memcpy(nn->weights[0]->data, w0, nn->weights[0]->rows * nn->weights[0]->cols * sizeof(float));
-    memcpy(nn->weights[1]->data, w1, nn->weights[1]->rows * nn->weights[1]->cols * sizeof(float));
+    memcpy(nn->biases[0]->data, b0, nn->biases[0]->rows * nn->biases[0]->cols * sizeof(double));
+    memcpy(nn->biases[1]->data, b1, nn->biases[1]->rows * nn->biases[1]->cols * sizeof(double));
+    memcpy(nn->weights[0]->data, w0, nn->weights[0]->rows * nn->weights[0]->cols * sizeof(double));
+    memcpy(nn->weights[1]->data, w1, nn->weights[1]->rows * nn->weights[1]->cols * sizeof(double));
     
     int ret = nn_evaluate(nn, &test_data);
     printf("Evaluation: %d - %d\n", ret, DIM_TEST_SET);

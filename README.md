@@ -28,7 +28,7 @@ Create tests for matrixes, i.e.
     {
         for (size_t j = 0; j < mm->cols; j++)
         {
-            float val = mm->data[(i*mm->cols) + j];
+            double val = mm->data[(i*mm->cols) + j];
             printf("%f ", val);
         }
         printf("\n");

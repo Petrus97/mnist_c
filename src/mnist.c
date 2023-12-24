@@ -245,7 +245,7 @@ matrix_t* mnist_img2matrix(const uint8_t* image)
     matrix_t* m = matrix_create(IMAGE_DIM, 1);
     for (size_t i = 0; i < IMAGE_DIM; i++)
     {
-        m->data[i] = (float)image[i];
+        m->data[i] = (double)image[i];
     }
     return m;
 }

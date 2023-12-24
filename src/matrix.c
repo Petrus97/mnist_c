@@ -6,7 +6,7 @@
 
 /**
  * @brief Create a matrix storing in the data field the 1D array-
- * The datatype stored is float.
+ * The datatype stored is double.
  * It's a 1D array of dim rows x cols.
  * You access the array data[(i*cols)+j]
  *
@@ -20,7 +20,7 @@ matrix_t *matrix_create(uint32_t rows, uint32_t cols)
     mm->rows = rows;
     mm->cols = cols;
     // created as 1D array, index as data[(i*cols) + j]
-    mm->data = (float *)calloc(mm->rows * mm->cols, sizeof(float));
+    mm->data = (double *)calloc(mm->rows * mm->cols, sizeof(double));
     return mm;
 }
 
@@ -37,7 +37,7 @@ matrix_t *matrix_dot(const matrix_t *A, const matrix_t *B)
     {
         for (size_t j = 0; j < B->cols; j++)
         {
-            float sum = 0.0;
+            double sum = 0.0;
             for (size_t k = 0; k < common_dim; k++)
             {
                 sum += A->data[(i * A->cols) + k] * B->data[j + (k * B->cols)];
@@ -61,9 +61,9 @@ void matrix_print(const matrix_t *m)
     }
 }
 
-inline static float sigmoid(float val)
+inline static double sigmoid(double val)
 {
-    return 1.0 / (1.0 + expf(-val));
+    return 1.0 / (1.0 + exp(-val));
 }
 
 /**
@@ -85,7 +85,7 @@ void matrix_sigmoid(matrix_t *m)
 int matrix_argmax(const matrix_t *m)
 {
     int max = 0;
-    float max_val = 0.0;
+    double max_val = 0.0;
     for (int i = 0; i < m->rows * m->cols; i++)
     {
         if (m->data[i] > max_val)
@@ -102,13 +102,13 @@ void matrix_deepcopy(matrix_t *dst, matrix_t *src)
     if (dst == NULL)
     {
         dst = matrix_create(src->rows, src->cols);
-        memcpy(dst->data, src->data, src->rows * src->cols * sizeof(float));
+        memcpy(dst->data, src->data, src->rows * src->cols * sizeof(double));
     }
     else
     {
         dst->rows = src->rows;
         dst->cols = src->cols;
-        memcpy(dst->data, src->data, src->rows * src->cols * sizeof(float));
+        memcpy(dst->data, src->data, src->rows * src->cols * sizeof(double));
     }
 }
 
