@@ -2,6 +2,7 @@
 #define MNIST_H
 
 #include <stdint.h>
+#include "matrix.h"
 
 // Training set
 #define TRAIN_IMAGES_PATH "./data/train-images-idx3-ubyte"
@@ -50,11 +51,13 @@ typedef struct test_data_t
     label_t labels[DIM_TEST_SET];
 } test_data_t;
 
-
+// TODO make static
 void check_magic_number(const char *path);
 void check_dimensions(const char *path, data_type_t data);
 void display_first_image(const char* path);
 
 void mnist_load_data(train_data_t* train_data, test_data_t* test_data);
+// TODO make it better
+matrix_t* mnist_img2matrix(const uint8_t* image);
 
 #endif
