@@ -185,6 +185,7 @@ static void mnist_load_test_images(test_data_t *test_data)
     f = fopen(TEST_IMAGES_PATH, "rb");
     if (f == NULL)
     {
+        printf("Unable to open file\n");
         return;
     }
     fseek(f, IMAGES_OFFSET, SEEK_SET); // skip metadata
